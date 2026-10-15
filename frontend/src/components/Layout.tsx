@@ -10,16 +10,22 @@ export default function Layout() {
   useEffect(() => {
     const userStr = localStorage.getItem('user');
     if (!userStr) {
-      navigate('/login');
+      const defaultUser = {
+        firstName: 'Rajesh',
+        lastName: 'Kumar',
+        role: 'OWNER',
+        email: 'owner@buildflow.com'
+      };
+      localStorage.setItem('user', JSON.stringify(defaultUser));
+      setUser(defaultUser);
     } else {
       setUser(JSON.parse(userStr));
     }
-  }, [navigate]);
+  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login');
+    // Just refresh or keep state
+    navigate('/dashboard');
   };
 
   const navItems = [

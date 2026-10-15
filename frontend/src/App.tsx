@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
-import Login from './pages/Login';
 import Projects from './pages/Projects';
 import ProjectDetails from './pages/ProjectDetails';
 import Materials from './pages/Materials';
@@ -12,7 +11,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Navigate to="/dashboard" replace />} />
         
         {/* Protected Routes Wrapper */}
         <Route path="/" element={<Layout />}>

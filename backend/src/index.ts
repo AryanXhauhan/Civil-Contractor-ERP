@@ -73,6 +73,32 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   });
 });
 
-app.listen(port, () => {
+const autoSeed = async () => {
+  try {
+    const userCount = await prisma.user.count();
+    if (userCount === 0) {
+      console.log('No users found. Creating default accounts...');
+      const bcrypt = await import('bcryptjs');
+      const passwordHash = await bcrypt.default.hash('password123', 10);
+      await prisma.user.upsert({
+        where: { email: 'owner@buildflow.com' },
+        update: {},
+        create: {
+          email: 'owner@buildflow.com',
+          password: passwordHash,
+          firstName: 'Rajesh',
+          lastName: 'Kumar',
+          role: 'OWNER'
+        }
+      });
+      console.log('Default owner account created: owner@buildflow.com / password123');
+    }
+  } catch (err) {
+    console.warn('Auto-seed check skipped or failed:', err);
+  }
+};
+
+app.listen(port, async () => {
   console.log(`Server is running on port ${port}`);
+  await autoSeed();
 });

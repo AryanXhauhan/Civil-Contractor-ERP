@@ -14,15 +14,10 @@ export const getDashboardOverview = async (req: Request, res: Response) => {
     const invoices = await prisma.invoice.findMany({
       where: { status: { in: ['SENT', 'OVERDUE'] } }
     });
-    const pendingPayments = invoices.reduce((acc, curr) => acc + curr.totalAmount, 0);
+    const pendingPayments = invoices.reduce((acc, curr) => acc + (curr.total || 0), 0);
 
-    const lowStockMaterials = await prisma.material.count({
-      where: {
-        currentStock: {
-          lte: prisma.material.fields.minThreshold
-        }
-      }
-    });
+    const materials = await prisma.material.findMany();
+    const lowStockMaterials = materials.filter(m => m.currentStock <= m.minStock).length;
 
     res.json({
       totalProjects,

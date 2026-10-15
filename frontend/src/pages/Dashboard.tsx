@@ -136,7 +136,7 @@ export default function Dashboard() {
               <Tooltip 
                 cursor={{ fill: '#F1F5F9' }}
                 contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)' }}
-                formatter={(value: number) => [formatCurrency(value), '']}
+                formatter={(value: any) => [formatCurrency(Number(value) || 0), '']}
               />
               <Legend 
                 iconType="circle" 
